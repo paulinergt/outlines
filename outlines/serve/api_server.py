@@ -15,36 +15,40 @@ from fastapi.responses import JSONResponse, Response, StreamingResponse
 from prometheus_client import make_asgi_app
 from starlette.routing import Mount
 
-import vllm.envs as envs
-from vllm.config import ModelConfig
-from vllm.engine.arg_utils import AsyncEngineArgs
-from vllm.engine.async_llm_engine import AsyncLLMEngine
-from vllm.engine.protocol import AsyncEngineClient
-from vllm.entrypoints.launcher import serve_http
-from vllm.entrypoints.logger import RequestLogger
-from vllm.entrypoints.openai.cli_args import make_arg_parser
-# yapf conflicts with isort for this block
-# yapf: disable
-from vllm.entrypoints.openai.protocol import (ChatCompletionRequest,
-                                              ChatCompletionResponse,
-                                              CompletionRequest,
-                                              DetokenizeRequest,
-                                              DetokenizeResponse,
-                                              EmbeddingRequest, ErrorResponse,
-                                              TokenizeRequest,
-                                              TokenizeResponse)
-from vllm.entrypoints.openai.rpc.client import AsyncEngineRPCClient
-from vllm.entrypoints.openai.rpc.server import run_rpc_server
-# yapf: enable
-from vllm.entrypoints.openai.serving_chat import OpenAIServingChat
-from vllm.entrypoints.openai.serving_completion import OpenAIServingCompletion
-from vllm.entrypoints.openai.serving_embedding import OpenAIServingEmbedding
-from vllm.entrypoints.openai.serving_tokenization import (
-    OpenAIServingTokenization)
-from vllm.logger import init_logger
-from vllm.usage.usage_lib import UsageContext
-from vllm.utils import FlexibleArgumentParser, get_open_port
-from vllm.version import __version__ as VLLM_VERSION
+try:
+    import vllm.envs as envs
+    from vllm.config import ModelConfig
+    from vllm.engine.arg_utils import AsyncEngineArgs
+    from vllm.engine.async_llm_engine import AsyncLLMEngine
+    from vllm.engine.protocol import AsyncEngineClient
+    from vllm.entrypoints.launcher import serve_http
+    from vllm.entrypoints.logger import RequestLogger
+    from vllm.entrypoints.openai.cli_args import make_arg_parser
+    # yapf conflicts with isort for this block
+    # yapf: disable
+    from vllm.entrypoints.openai.protocol import (ChatCompletionRequest,
+                                                ChatCompletionResponse,
+                                                CompletionRequest,
+                                                DetokenizeRequest,
+                                                DetokenizeResponse,
+                                                EmbeddingRequest, ErrorResponse,
+                                                TokenizeRequest,
+                                                TokenizeResponse)
+    from vllm.entrypoints.openai.rpc.client import AsyncEngineRPCClient
+    from vllm.entrypoints.openai.rpc.server import run_rpc_server
+    # yapf: enable
+    from vllm.entrypoints.openai.serving_chat import OpenAIServingChat
+    from vllm.entrypoints.openai.serving_completion import OpenAIServingCompletion
+    from vllm.entrypoints.openai.serving_embedding import OpenAIServingEmbedding
+    from vllm.entrypoints.openai.serving_tokenization import (
+        OpenAIServingTokenization)
+    from vllm.logger import init_logger
+    from vllm.usage.usage_lib import UsageContext
+    from vllm.utils import FlexibleArgumentParser, get_open_port
+    from vllm.version import __version__ as VLLM_VERSION
+except ModuleNotFoundError as e:
+    print(f"Error importing vllm: {e}")
+    raise
 
 TIMEOUT_KEEP_ALIVE = 5  # seconds
 
